@@ -22,6 +22,12 @@ public class Movie {
     }
 
     public Money calculateMovieFee(Screening screening) {
+        // Movie 클래스에서 책임을 맡아 처리하므로 협력이 일관적이지 않음
+        // 책임의 위치를 결정하기 윟 ㅐ조건문을 사용하는 것은 대부분 좋지 않은 선택
+        // if (discountPolicy == null) {
+        //     return fee;
+        // }
+        
         // DiscountPolicy의 인터페이스에 정의된 calculateDiscountAmount 메시지를 전송
         // 협력하는 객체가 어떤 클래스의 인스턴스인지는 중요하지 않음
         // 인스턴스가 해당 메시지를 처리할 수만 있으면 상관 없음
