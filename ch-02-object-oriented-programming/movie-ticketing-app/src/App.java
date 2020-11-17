@@ -26,5 +26,7 @@ public class App {
             Duration.ofMinutes(210), 
             Money.wons(10000), 
             new NoneDiscountPolicy());
+
+        avater.changeDiscountPolicy(new PercentDiscountPolicy(0.2, new SequenceCondition(2)));
     }
 }

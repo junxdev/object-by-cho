@@ -12,6 +12,10 @@ public abstract class DiscountPolicy {
     }
 
     public Money calculateDiscountAmount(Screening screening) {
+        // DiscountCondition이 없는 NoneDiscountPolicy는 getDiscountAmount 메서드를 호출하지 않음
+        // 개발자가 위를 가정하고 개발한다면 부모 클래스와 자식 클래스가 개념적으로 결합되는 결과를 낳음
+        // 이를 분리하기 위해서는 DiscountPolicy를 인터페이스로 바꾸고 calculateDiscountAmount를 오버라이딩시킬 수 있음
+        // 이상적인 설게와 명쾌한 코드 사이의 Trade-off 발생
         for(DiscountCondition each : conditions) {
             if (each.isSatisfiedBy(screening)) {
                 return getDiscountAmount(screening);

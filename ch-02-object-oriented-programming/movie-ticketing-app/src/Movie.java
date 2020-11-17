@@ -23,7 +23,7 @@ public class Movie {
 
     public Money calculateMovieFee(Screening screening) {
         // Movie 클래스에서 책임을 맡아 처리하므로 협력이 일관적이지 않음
-        // 책임의 위치를 결정하기 윟 ㅐ조건문을 사용하는 것은 대부분 좋지 않은 선택
+        // 책임의 위치를 결정하기 위해 조건문을 사용하는 것은 대부분 좋지 않은 선택
         // if (discountPolicy == null) {
         //     return fee;
         // }
@@ -37,4 +37,13 @@ public class Movie {
         // 컴파일 시점에 결정 = 초기 바인딩(Early binding) 또는 정적 바인딩(Static binding)
         return fee.minus(discountPolicy.calculateDiscountAmount(screening));
     }
+
+    // 합성을 하면 메시지만 알기 때문에 인터페이스와 약하게 결합
+    // >> 구현을 효과적으로 캡슐화
+    // >> 의존성이 낮기 때문에 유연한 설계
+    public void changeDiscountPolicy(DiscountPolicy discountPolicy) {
+        this.discountPolicy = discountPolicy;
+    }
+
+    // 코드를 재사용하는 경우 합성, 다형성을 위해 인터페이스를 재사용하는 경우 상속과 합성을 조합
 }
