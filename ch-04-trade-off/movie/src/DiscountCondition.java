@@ -14,6 +14,26 @@ public class DiscountCondition {
         return type;
     }
 
+    // 파라미터로 어떤 정보를 사용하는지 노출
+    // 할인조건의 속성이 변경될 경우 메서드를 사용하는 모든 클라이언트가 수정될 가능성 높음
+    public boolean isDicountable(DayOfWeek dayOfWeek, LocalTime time) {
+        if(type != DiscountConditionType.PERIOD) {
+            throw new IllegalArgumentException();
+        }
+
+        return this.dayOfWeek.equals(dayOfWeek) &&
+                this.startTime.compareTo(time) <= 0 &&
+                this.endTime.compareTo(time) >= 0;
+    }
+
+    public boolean isDicountable(int sequence) {
+        if(type != DiscountConditionType.SEQUENCE) {
+            throw new IllegalArgumentException();
+        }
+
+        return this.sequence == sequence;
+    }
+
     public void setType(DiscountConditionType type) {
         this.type = type;
     }

@@ -1,4 +1,5 @@
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Movie {
@@ -10,6 +11,47 @@ public class Movie {
     private MovieType movieType;
     private Money discountAmount;
     private double discountPercent;
+
+    public Money calculateAmountDiscountedFee() {
+        if(movieType != MovieType.AMOUNT_DISCOUNT) {
+            throw new IllegalArgumentException();
+        }
+
+        return fee.minus(discountAmount);
+    }
+
+    // 할인정책의 종류만큼 메서드가 필요 = 할인정책 변경 시 메서드가 수정될 가능성
+    public Money calculatePercentDiscountedFee() {
+        if(movieType != MovieType.PERCENT_DISCOUNT) {
+            throw new IllegalArgumentException();
+        }
+
+        return fee.minus(fee.times(discountPercent));
+    }
+
+    public Money calculateNoneDiscountedFee() {
+        if(movieType != MovieType.NONE_DISCOUNT) {
+            throw new IllegalArgumentException();
+        }
+
+        return fee;
+    }
+
+    public boolean isDiscountable(LocalDateTime whenScreened, int sequence) {
+        for(DiscountCondition condition : discountConditions) {
+            if(condition.getType() == DiscountConditionType.PERIOD) {
+                if(condition.isDicountable(whenScreened.getDayOfWeek(), whenScreened.toLocalTime())) {
+                    return true;
+                }
+            } else {
+                if(condition.isDicountable(sequence)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 
     public Money getFee() {
         return fee;
